@@ -1,11 +1,6 @@
 CS 361 Course Project
 Microservice Communication Contract
-
-Add a README to your GitHub (or update it if you already have one) that contains your communication contract. (Once you define it, don't change it! Your partner is relying on you.) README must contain...
-
-    Clear instructions for how to REQUEST data from the microservice you implemented. Include an example call.
-    Clear instructions for how to RECEIVE data from the microservice you implemented
-    UML sequence diagram showing how requesting and receiving data work. Make it detailed enough that your partner (and your grader) will understand
+UML Diagram source: course textbook, page 56 (created through draw.io)
 
 Installation
 1. Download and install RabbitMQ here: https://www.rabbitmq.com/download.html
