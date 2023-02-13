@@ -27,17 +27,28 @@ def main():
 
     print("Making query type: nameSuggestion...")
     time.sleep(2)
-    messageBody = json.dumps({"queryType": "nameSuggestion"})
+    messageBody = json.dumps({
+        "queryType": "nameSuggestion",
+        "race": "Human",
+        "playerClass": "Rogue"
+    })
     channel.basic_publish(exchange='', routing_key='hello',
                           body=messageBody)
     print("Message sent: ", messageBody)
 
-    print("Making query type: background...")
-    time.sleep(2)
-    messageBody = json.dumps({"queryType": "background"})
-    channel.basic_publish(exchange='', routing_key='hello',
-                          body=messageBody)
-    print("Message sent: ", messageBody)
+    # print("Generating DND Character...")
+    # time.sleep(2)
+    # messageBody = json.dumps({
+    #     "queryType": "background",
+    #     "name": "Steve",
+    #     "race": "Human",
+    #     "playerClass": "Rogue",
+    #     "homeland": "Faerun",
+    #     "family": "Caitlin and Kenzie",
+    #     "adventureReason": "get gold",
+    #     "flaw": "greedy"
+    # })
+
     channel.close()
 
 

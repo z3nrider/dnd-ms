@@ -19,6 +19,9 @@ def main():
 
         if req["queryType"] == "nameSuggestion":
             print('your query type is ', req["queryType"])
+            print('Here is your character:')
+            print(
+                f"I will suggest you a name for a {req['race']} {req['playerClass']}.")
         elif req["queryType"] == "background":
             print('your query type is background')
 
@@ -29,6 +32,11 @@ def main():
     channel.start_consuming()
 
 
+# print("Name: ", req['name'], "Race: ", req['race'],
+#                   "Class: ", req['playerClass'], "Homeland: ",
+#                   req['homeland'], "Family: ", req['family'],
+#                   "Adventure Reason: ", req['adventureReason'],
+#                   "Flaw : ", req['flaw'])
 if __name__ == '__main__':
     try:
         main()
