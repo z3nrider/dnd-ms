@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# consumer
 import pika
 import json
 import sys
@@ -17,7 +18,7 @@ def main():
         req = json.loads(body)
 
         if req["queryType"] == "nameSuggestion":
-            print('your query type is nameSuggestion')
+            print('your query type is ', req["queryType"])
         elif req["queryType"] == "background":
             print('your query type is background')
 
