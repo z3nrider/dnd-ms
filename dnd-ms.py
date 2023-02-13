@@ -18,10 +18,11 @@ def main():
         req = json.loads(body)
 
         if req["queryType"] == "nameSuggestion":
-            print('your query type is ', req["queryType"])
+            print('your query type is', req["queryType"])
             print('Here is your character:')
-            print(
-                f"I will suggest you a name for a {req['race']} {req['playerClass']}.")
+            prompt = {
+                "prompt": f"Suggest me a name for a {req['race']} {req['playerClass']}."}
+            print(prompt["prompt"])
         elif req["queryType"] == "background":
             print('your query type is background')
 
