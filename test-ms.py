@@ -12,7 +12,7 @@ def main():
         pika.ConnectionParameters(host='localhost'))
     channel = connection.channel()
 
-    channel.queue_declare(queue='hello')
+    channel.queue_declare(queue='request')
 
     def callback(ch, method, properties, body):
         print(f"Message received: {json.loads(body)}.")
