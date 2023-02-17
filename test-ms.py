@@ -24,11 +24,14 @@ def receive(ch, method, properties, body):
 # A function that sends the JSON to dnd-ms.py
 
 
-def send(body):
+def send(ch, method, properties, body):
     print('You just called the send method.')
     channel.basic_publish(exchange='', routing_key='request', body=body)
     # channel.close()
 
+
+channel.basic_consume(
+    queue='request', on_message_callback=receive, auto_ack=True)
 
 if __name__ == '__main__':
     try:

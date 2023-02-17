@@ -14,49 +14,48 @@ def main():
         pika.ConnectionParameters(host='localhost'))
     channel = connection.channel()
 
-    channel.queue_declare(queue='request')
+    def receive(ch, method, properties, body):
+        # declare queue channels
+        channel.queue_declare(queue='request')
+        channel.queue_declare(queue='response')
+        channel.basic_consume(
+            queue='request', on_message_callback=receive, auto_ack=True)
+        print(' [*] Waiting for messages. To exit press CTRL+C')
+        channel.start_consuming()
 
-    def callback(ch, method, properties, body):
+        print('You just called the receive method.')
         req = json.loads(body)
-        print('===========')
-        print(req)
-        print(req['queryType'])
+
         if req["queryType"] == "nameSuggestion":
-            print('\nYour query type is', req["queryType"], '\n')
-            print('Here is your character prompt:\n')
             prompt = {
                 "prompt": f"Suggest me a name for a {req['race']} {req['playerClass']}."}
-            print(prompt["prompt"])  # need to send back this
+            print('Your query type is nameSuggestion.')
+            print('Here is your character prompt:', prompt)
+
             prompt = json.dumps(prompt)
 
-            channel.basic_publish(exchange='', routing_key='request',
-                                  body=prompt)
+            send(prompt)
 
         elif req["queryType"] == "background":
-            print('\nYour query type is', req["queryType"], '.\n')
             prompt = {
                 "prompt":
-                f"Suggest me a background story for {req['name']}, a {req['race']} {req['playerClass']}. \nThey are from {req['homeland']}. \nTheir family is {req['family']}. \nTheir reason for adventuring is to {req['adventureReason']}. \nTheir flaw is that they are {req['flaw']}."
+                f"Suggest me a background story for {req['name']}, a {req['race']} {req['playerClass']}. They are from {req['homeland']}. Their family is {req['family']}. Their reason for adventuring is to {req['adventureReason']}. Their flaw is that they are {req['flaw']}."
             }
-            print(prompt["prompt"])
+            print('Your query type is background.')
+            print('Here is your background prompt:', prompt)
 
         else:
             print(
-                f'\nI did not understand your query type {req["queryType"]}.\nPlease choose from nameSuggestion or background\nin your request and, try again.\n')
-            print(' [*] Waiting for messages. To exit press CTRL+C\n')
+                f'I did not understand your query type {req["queryType"]}. Please choose from nameSuggestion or background in your request and, try again.')
 
-    channel.basic_consume(
-        queue='request', on_message_callback=callback, auto_ack=True)
+    # TODO: not quite working yet
+    def send(ch, method, properties, prompt):
+        print('You just called the send method.')
+        body = json.dumps(prompt)
+        channel.basic_publish(
+            exchange='', routing_key='response', body=body)
 
-    print(' [*] Waiting for messages. To exit press CTRL+C')
-    channel.start_consuming()
 
-
-# print("Name: ", req['name'], "Race: ", req['race'],
-#                   "Class: ", req['playerClass'], "Homeland: ",
-#                   req['homeland'], "Family: ", req['family'],
-#                   "Adventure Reason: ", req['adventureReason'],
-#                   "Flaw : ", req['flaw'])
 if __name__ == '__main__':
     try:
         main()
