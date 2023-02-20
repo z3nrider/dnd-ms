@@ -46,10 +46,8 @@ def receive(ch, method, properties, body):
         print(' [*] Waiting for messages. To exit press CTRL+C')
 
     else:
-        err = (
-            f'I did not understand your query type {req["queryType"]}. Please choose from nameSuggestion or background in your request and, try again.')
-        print(err)
-        send(err)
+        prompt = json.dumps({"error": "invalid queryType"})
+        send(prompt)
         print(' [*] Waiting for messages. To exit press CTRL+C')
 
 
