@@ -25,7 +25,6 @@ def receive(ch, method, properties, body):
     '''
     A function that receives messages from dnd-ms.py
     '''
-    print('You just called the receive method.')
     print(f"Message received: {json.loads(body)}.")
 
 
@@ -33,7 +32,6 @@ def send(body):
     '''
     A function that sends the JSON to dnd-ms.py
     '''
-    print('You just called the send method.')
     channel.basic_publish(exchange='', routing_key='request', body=body)
     consume()
 
@@ -46,6 +44,7 @@ if __name__ == '__main__':
         print("Making query type: nameSuggestion...")
         messageBody = json.dumps({
             "queryType": "nameSuggestion",
+            "gender": "male",
             "race": "Human",
             "playerClass": "Rogue"
         })
@@ -61,13 +60,15 @@ if __name__ == '__main__':
             "homeland": "Faerun",
             "family": "Caitlin and Kenzie",
             "adventureReason": "get gold",
-            "flaw": "greedy"
+            "flaw": "greedy",
+            "fake": "this is fake"
         })
         send(messageBody)
 
         # Test 3: Making an invalid query type request
         print("Making query type: fake query type")
-        messageBody = json.dumps({"queryType": "fakeRequest"})
+        messageBody = json.dumps(
+            {"queryType": "fakeQuery", "name": "billy"})
         send(messageBody)
 
     except KeyboardInterrupt:
